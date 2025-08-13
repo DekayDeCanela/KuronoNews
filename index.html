@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Kurono Newsletter — Edición Lima 2019 (Tema: Relojes y Tiempo)</title>
+  <meta name="description" content="Diario con estética de relojería: portada, secciones y artículo principal con comentarios. Splash de 7s inspirado en relojes. Misma lógica funcional." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      /* Paleta relojera: pizarra, latón, marfil */
+      --bg:#0e1114; --panel:rgba(255,255,255,.05); --panel-2:rgba(255,255,255,.08);
+      --text:#f2efe6; --muted:#b6b1a6; --accent:#f5c86a; --accent-2:#caa24e; --danger:#d9534f;
+      --shadow:0 10px 30px rgba(0,0,0,.35); --radius:16px; --glass:blur(8px) saturate(115%);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; color:var(--text); font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto;
+      background:
+        radial-gradient(70% 50% at 80% -10%, rgba(245,200,106,.08), transparent 60%),
+        radial-gradient(70% 50% at 0% 110%, rgba(202,162,78,.08), transparent 60%),
+        repeating-conic-gradient(from 0deg, rgba(255,255,255,.04) 0 1deg, transparent 1deg 6deg),
+        var(--bg);
+      background-blend-mode:screen,screen,normal,normal; min-height:100dvh;
+    }
+
+    /* ===== SPLASH (Relojería) 7s ===== */
+    .splash{ position:fixed; inset:0; z-index:9999; display:grid; place-items:center; background:
+      radial-gradient(80% 60% at 50% 40%, rgba(245,200,106,.10), transparent 70%),
+      radial-gradient(120% 90% at 50% 50%, #0b0e11, #0b0e11);
+      overflow:hidden; }
+    .splash.hidden{ pointer-events:none; animation: splash-out .7s ease forwards }
+    @keyframes splash-out{ to{ opacity:0; transform:scale(1.02) } }
+
+    /* carátula del reloj */
+    .dial{ position:relative; width:min(440px, 90vw); aspect-ratio:1; border-radius:50%;
+      background:
+        radial-gradient(circle at 50% 50%, rgba(255,255,255,.08), rgba(255,255,255,.02) 60%, transparent 62%),
+        repeating-conic-gradient(
+          from -1deg,
+          rgba(245,200,106,.35) 0 2deg,
+          transparent 2deg 6deg
+        ),
+        radial-gradient(circle at 50% 50%, rgba(0,0,0,.5), rgba(0,0,0,.2) 55%, rgba(0,0,0,.7) 70%),
+        linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      border:2px solid rgba(245,200,106,.5); box-shadow: 0 20px 80px rgba(0,0,0,.55), inset 0 0 40px rgba(0,0,0,.5);
+    }
+    .dial::before{ /* índices principales */
+      content:""; position:absolute; inset:8%; border-radius:50%;
+      background: repeating-conic-gradient(
+        from 0deg,
+        rgba(245,200,106,.9) 0 1deg, transparent 1deg 29deg
+      );
+      mask: radial-gradient(circle, transparent 40%, #000 41%);
+      opacity:.55;
+    }
+    .axle{ position:absolute; left:50%; top:50%; width:18px; height:18px; transform:translate(-50%,-50%);
+      background:radial-gradient(circle at 30% 30%, #fff, #f5c86a 60%, #a27e2e 90%); border-radius:50%; box-shadow:0 0 18px rgba(245,200,106,.6);
+    }
+    .hand{ position:absolute; left:50%; top:50%; transform-origin:50% calc(100% - 6px); transform:translate(-50%,-100%) rotate(0deg);
+      width:4px; height:48%; background:linear-gradient(180deg, #f5c86a, #caa24e); border-radius:3px; box-shadow:0 0 10px rgba(245,200,106,.6);
+      animation: sweep 7s linear infinite; }
+    .hand::after{ content:""; position:absolute; bottom:-10px; left:50%; transform:translateX(-50%); width:10px; height:10px; border-radius:50%; background:#caa24e }
+    @keyframes sweep{ from{ transform:translate(-50%,-100%) rotate(0deg) } to{ transform:translate(-50%,-100%) rotate(360deg) } }
+
+    .brandTitle{ text-align:center; margin-top:18px; font:700 26px Rajdhani; letter-spacing:1.2px }
+    .brandSubtitle{ text-align:center; color:var(--muted) }
+    .progress{ width:min(520px,92vw); height:12px; margin:14px auto 0; border-radius:999px; background:rgba(255,255,255,.06); border:1px solid rgba(202,162,78,.35); overflow:hidden }
+    .bar{ height:100%; width:0%; background: linear-gradient(90deg, rgba(245,200,106,.2), rgba(245,200,106,.8)); position:relative }
+    .bar::after{ content:""; position:absolute; top:-40%; bottom:-40%; width:120px; left:-120px; background: radial-gradient(60px 60px at 50% 50%, rgba(255,255,255,.5), transparent 60%); filter:blur(6px); animation: sweepBar 1.4s linear infinite }
+    @keyframes sweepBar{ from{ transform:translateX(0) } to{ transform:translateX(360px) } }
+    .status{ display:flex; justify-content:space-between; color:var(--muted); font:600 12px Rajdhani; width:min(520px,92vw); margin:6px auto 0 }
+    .motto{ text-align:center; color:#f5deb1; font:600 13px Rajdhani; letter-spacing:.8px; margin-top:4px }
+
+    @media (prefers-reduced-motion:reduce){ .hand{ animation:none } .splash.hidden{ animation:none; opacity:0 } }
+
+    /* ===== HEADER / LAYOUT (estética relojera) ===== */
+    header.topbar{position:sticky; top:0; z-index:40; backdrop-filter:var(--glass);
+      background:linear-gradient(180deg, rgba(20,24,28,.9), rgba(20,24,28,.75)); border-bottom:1px solid rgba(202,162,78,.25)}
+    .topbar-inner{max-width:1200px; margin:0 auto; padding:12px 20px; display:grid; grid-template-columns:auto 1fr auto; gap:12px; align-items:center}
+    .brand{display:flex; align-items:center; gap:12px}
+    .brand .logo{width:38px; height:38px; border-radius:50%; border:1px solid rgba(202,162,78,.35);
+      background: conic-gradient(from 0deg, rgba(245,200,106,.1), rgba(245,200,106,.3) 25%, rgba(245,200,106,.1) 50%) , radial-gradient(circle at 30% 30%, rgba(245,200,106,.35), rgba(245,200,106,.08) 60%, transparent 60%);
+      box-shadow: inset 0 0 30px rgba(245,200,106,.25), 0 0 24px rgba(245,200,106,.18);
+      animation: tick 1s steps(2) infinite; }
+    @keyframes tick{ to{ filter:hue-rotate(10deg) } }
+    .brand h1{font:700 20px Rajdhani; letter-spacing:1px; margin:0}
+    .brand small{color:var(--muted)}
+
+    nav.quick{justify-self:center; display:flex; gap:14px; flex-wrap:wrap}
+    nav.quick a{color:var(--muted); text-decoration:none; font:600 13px Rajdhani; padding:6px 10px; border-radius:999px; border:1px solid rgba(202,162,78,.3)}
+    nav.quick a:hover{color:var(--text); border-color:rgba(202,162,78,.6)}
+
+    .userbox{justify-self:end; display:flex; gap:10px; align-items:center; color:var(--muted)}
+    .userbox input{background:var(--panel); color:var(--text); border:1px solid rgba(202,162,78,.3); border-radius:999px; padding:8px 12px; width:180px; outline:none}
+
+    .container{max-width:1200px; margin:0 auto; padding:0 20px}
+    .card{background:var(--panel); border:1px solid rgba(255,255,255,.12); border-radius:16px; box-shadow:var(--shadow); overflow:hidden}
+    .section{margin:26px 0}
+    .title{font:700 20px Rajdhani; letter-spacing:.8px; margin:0 0 12px}
+    .subtle{color:var(--muted)}
+
+    .tabs{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px}
+    .tab{all:unset; cursor:pointer; padding:8px 12px; border-radius:999px; border:1px solid rgba(202,162,78,.35); background:rgba(202,162,78,.08); font:600 13px Rajdhani}
+    .tab.active{background:rgba(202,162,78,.16)}
+
+    .grid{display:grid; grid-template-columns:2fr 1fr 1fr; gap:16px}
+    .news-card{position:relative; overflow:hidden; border-radius:14px; border:1px solid rgba(255,255,255,.12); background:rgba(255,255,255,.03); cursor:pointer}
+    .news-media{height:200px; background:#111; background-size:cover; background-position:center; filter:grayscale(15%) contrast(110%) saturate(110%); transition: transform .6s cubic-bezier(.2,.8,.2,1)}
+    .news-card:hover .news-media{ transform: scale(1.04) rotate(.2deg) }
+    .news-body{padding:12px 14px; display:grid; gap:6px}
+    .news-title{font:700 18px Rajdhani}
+    .news-meta{display:flex; gap:8px; align-items:center; color:var(--muted); font-size:12px}
+    .chip{font:600 12px Rajdhani; letter-spacing:.6px; padding:4px 10px; border-radius:999px; color:var(--text); border:1px solid rgba(202,162,78,.35); background:rgba(202,162,78,.14)}
+
+    .ticker{display:flex; gap:16px; overflow:auto; padding:10px}
+    .ticker .pill{white-space:nowrap; border:1px dashed rgba(202,162,78,.35); padding:8px 12px; border-radius:999px}
+
+    .highlights{display:grid; grid-template-columns:1.3fr 1fr; gap:16px}
+    .stat{display:grid; gap:4px; padding:14px}
+    .stat strong{font:700 24px Rajdhani}
+    .tags{display:flex; gap:8px; flex-wrap:wrap; padding:12px}
+
+    .two-col{display:grid; grid-template-columns:1fr 1fr; gap:16px}
+    .list{padding:14px; display:grid; gap:10px}
+    .list-item{display:flex; gap:10px; align-items:center}
+    .dot{width:8px; height:8px; background:var(--accent); border-radius:999px; box-shadow:0 0 8px var(--accent)}
+
+    /* Modal de artículos */
+    .modal{position:fixed; inset:0; display:none; place-items:center; z-index:60}
+    .modal.active{display:grid}
+    .backdrop{position:absolute; inset:0; background:rgba(0,0,0,.6); backdrop-filter:blur(4px); opacity:0; animation:fade-in .2s forwards}
+    @keyframes fade-in{to{opacity:1}}
+    .sheet{position:relative; width:min(920px, 92vw); max-height:86vh; overflow:auto; background:rgba(16,20,24,.96); border:1px solid rgba(255,255,255,.15); border-radius:18px; box-shadow:0 30px 80px rgba(0,0,0,.6); transform:translateY(8px) scale(.98); opacity:0; animation:pop .28s .05s forwards}
+    @keyframes pop{to{transform:none; opacity:1}}
+    .sheet header{position:sticky; top:0; background:linear-gradient(180deg, rgba(20,24,28,.95), rgba(20,24,28,.7)); border-bottom:1px solid rgba(202,162,78,.25); padding:14px 18px; display:flex; justify-content:space-between; align-items:center}
+    .close{all:unset; cursor:pointer; padding:6px 10px; border-radius:10px; border:1px solid rgba(255,255,255,.2)}
+    .sheet .hero{padding:0}
+    .sheet .hero-img{height:260px; background-size:cover; background-position:center; filter:grayscale(10%)}
+    .sheet .body{padding:18px 20px; line-height:1.75}
+
+    /* Principal */
+    .headline{position:relative; min-height:360px; display:grid; grid-template-rows:1fr auto; background:
+      radial-gradient(140% 90% at 100% 0%, rgba(245,200,106,.08), transparent 60%),
+      radial-gradient(140% 90% at 0% 100%, rgba(202,162,78,.08), transparent 60%),
+      linear-gradient(160deg, rgba(255,255,255,.04), rgba(255,255,255,.02)); }
+    .headline .media{position:absolute; inset:0; opacity:.5; filter:grayscale(20%) contrast(110%); background:
+      radial-gradient(circle at 50% 50%, transparent 40%, rgba(245,200,106,.08) 41% 42%, transparent 43%),
+      url('https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=1600&auto=format&fit=crop') center/cover no-repeat }
+    .headline .overlay{position:absolute; inset:0; background: radial-gradient(800px 400px at 60% 10%, transparent, rgba(0,0,0,.65))}
+    .headline h2{margin:20px; z-index:2; position:relative; font:700 34px Rajdhani; letter-spacing:1.2px; text-shadow:0 2px 18px rgba(0,0,0,.5)}
+    .headline .meta{z-index:2; padding:18px 20px; display:flex; gap:10px; align-items:center; backdrop-filter:blur(6px); background:linear-gradient(180deg, rgba(20,24,28,.4), rgba(20,24,28,.7)); border-top:1px solid rgba(202,162,78,.25)}
+
+    /* Comentarios */
+    .comments{margin:10px 0 60px}
+    .comments header{display:flex; align-items:center; justify-content:space-between; padding:14px 18px; border-bottom:1px dashed rgba(202,162,78,.25)}
+    .composer{display:grid; gap:10px; padding:14px}
+    .composer textarea{width:100%; min-height:110px; resize:vertical; padding:14px; color:var(--text); background:var(--panel); border:1px solid rgba(202,162,78,.3); border-radius:12px}
+    .actions{display:flex; gap:10px; align-items:center; justify-content:space-between; color:var(--muted)}
+    .btn{all:unset; display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:10px 16px; border-radius:12px; cursor:pointer; user-select:none; background:linear-gradient(180deg, rgba(202,162,78,.25), rgba(202,162,78,.12)); border:1px solid rgba(202,162,78,.45); box-shadow: inset 0 0 30px rgba(202,162,78,.12), 0 6px 20px rgba(0,0,0,.25); font-weight:600; letter-spacing:.5px; position:relative; overflow:hidden}
+    .btn:active{transform: translateY(1px)}
+    .btn::after{content:""; position:absolute; inset:0; background: conic-gradient(from var(--angle,0deg), transparent 0 280deg, rgba(245,200,106,.3) 280deg 360deg); opacity:.6; transition: opacity .35s ease}
+    .btn:hover{ --angle: 90deg }
+    .feed{display:grid; gap:12px; padding:14px}
+    .comment{display:grid; grid-template-columns:40px 1fr; gap:12px; padding:14px; border-radius:14px; background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02)); border:1px solid rgba(255,255,255,.1); transform-origin:left center; animation: pop-in .35s ease both }
+    @keyframes pop-in{ from{ transform:scale(.98) rotate(-.2deg); opacity:0 } to{ transform:scale(1) rotate(0); opacity:1 } }
+    .avatar{width:40px; height:40px; border-radius:50%; background: conic-gradient(from 0deg, rgba(202,162,78,.3), rgba(202,162,78,.1)); border:1px solid rgba(202,162,78,.35); box-shadow: inset 0 0 20px rgba(202,162,78,.15)}
+    .comment .head{display:flex; align-items:baseline; gap:8px}
+    .username{font:700 14px Rajdhani}
+    .time-label{font:600 11px Rajdhani; color:var(--muted)}
+    .body{color:#efe9db; line-height:1.6; margin-top:6px}
+    .tools{margin-top:8px; display:flex; gap:10px}
+    .tool{all:unset; cursor:pointer; font:600 12px Rajdhani; color:var(--muted); padding:4px 8px; border-radius:8px; border:1px solid rgba(255,255,255,.1)}
+    .tool.like.liked{color:var(--danger); border-color:rgba(217,83,79,.4)}
+
+    /* Reveal */
+    .reveal{opacity:0; transform: translateY(10px); transition: opacity .6s ease, transform .6s ease}
+    .reveal.in{opacity:1; transform:none}
+
+    footer{color:var(--muted); text-align:center; padding:10px 0 40px}
+
+    @media (max-width:1000px){ .grid{grid-template-columns:1fr 1fr} .highlights{grid-template-columns:1fr} .two-col{grid-template-columns:1fr} }
+    @media (prefers-reduced-motion:reduce){ .reveal{opacity:1; transform:none} }
+    @media (max-width:720px){ nav.quick{display:none} .grid{grid-template-columns:1fr} }
+  </style>
+</head>
+<body>
+  <!-- SPLASH relojero 7s -->
+  <div class="splash" id="splash" aria-label="Cargando Kurono Newsletter">
+    <div class="dial">
+      <div class="hand" aria-hidden="true"></div>
+      <div class="axle" aria-hidden="true"></div>
+    </div>
+    <div class="brandTitle">Kurono <span style="color:var(--accent)">Newsletter</span></div>
+    <div class="brandSubtitle">Ajustando engranajes • Sincronizando marcas • Preparando la edición</div>
+    <div class="progress"><div class="bar" id="bar"></div></div>
+    <div class="status"><span id="phase">Cargando módulos…</span><span id="percent">0%</span></div>
+    <div class="motto">«El tiempo todo lo cuenta»</div>
+  </div>
+
+  <!-- HEADER -->
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <h1>Kurono <span style="color:var(--accent)">Newsletter</span></h1>
+          <small>Diario • Edición Especial</small>
+        </div>
+      </div>
+      <nav class="quick">
+        <a href="#portada">Portada</a>
+        <a href="#tendencias">Tendencias</a>
+        <a href="#resumen">Resumen</a>
+        <a href="#principal">Caso Lima 2019</a>
+      </nav>
+      <div class="userbox">
+        <span>Usuario:</span>
+        <input id="username" value="@Minerva" aria-label="Nombre de usuario" />
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- PORTADA -->
+    <section id="portada" class="section">
+      <h2 class="title">Portada</h2>
+      <div class="tabs" id="tabs">
+        <button class="tab active" data-filter="all">Todas</button>
+        <button class="tab" data-filter="mundo">Mundo</button>
+        <button class="tab" data-filter="tecnologia">Tecnología</button>
+        <button class="tab" data-filter="sociedad">Sociedad</button>
+      </div>
+      <div class="grid" id="newsGrid"></div>
+    </section>
+
+    <!-- TENDENCIAS / EN VIVO -->
+    <section id="tendencias" class="section">
+      <div class="highlights">
+        <div class="card">
+          <h3 class="title" style="padding:14px 14px 0 14px; margin-bottom:0">En vivo</h3>
+          <div class="ticker" id="liveTicker">
+            <span class="pill">🕰️ Sincronización de cámaras: <b>+3</b> alineadas</span>
+            <span class="pill">⏱️ Rutas temporales: <b>2</b> nuevas</span>
+            <span class="pill">📜 Registros históricos: <b>12</b> revisados</span>
+            <span class="pill">⌚ Huellas temporales: <b>4</b> coincidencias</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="stat">
+            <span class="subtle">Lectores conectados</span>
+            <strong id="readers">1,284</strong>
+            <span class="subtle">Actualiza cada 5 s</span>
+          </div>
+          <div class="tags" id="tags">
+            <span class="chip">#Lima2019</span>
+            <span class="chip">#Cronología</span>
+            <span class="chip">#LíneaDeTiempo</span>
+            <span class="chip">#Testimonios</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- RESUMEN -->
+    <section id="resumen" class="section two-col">
+      <div class="card list">
+        <h3 class="title">Lo último</h3>
+        <div class="list-item"><span class="dot"></span><span>Geoanálisis sugiere una ruta alternativa en el centro.</span></div>
+        <div class="list-item"><span class="dot"></span><span>Peritos digitales reconstruyen mensajes eliminados.</span></div>
+        <div class="list-item"><span class="dot"></span><span>Vecinos reportan sonidos alrededor de medianoche.</span></div>
+        <div class="list-item"><span class="dot"></span><span>Filtran permisos de obra de octubre 2019.</span></div>
+      </div>
+      <div class="card list">
+        <h3 class="title">Agenda</h3>
+        <div class="list-item"><span class="dot"></span><span>11:00 — Rueda de prensa (Fiscalía).</span></div>
+        <div class="list-item"><span class="dot"></span><span>14:30 — Recorrido por circuito de cámaras.</span></div>
+        <div class="list-item"><span class="dot"></span><span>18:00 — Entrevista con analista forense.</span></div>
+      </div>
+    </section>
+
+    <!-- PRINCIPAL AL FINAL -->
+    <section id="principal" class="section">
+      <div class="card headline">
+        <div class="media" aria-hidden="true"></div>
+        <div class="overlay" aria-hidden="true"></div>
+        <h2>Crimen en la ciudad de Lima — 2019</h2>
+        <div class="meta">
+          <span class="chip">Investigación Especial</span>
+          <span class="chip">Lima, Perú</span>
+          <span class="chip" title="Se actualiza con nuevos datos">Cobertura en desarrollo</span>
+        </div>
+      </div>
+      <div class="section card" style="margin-top:16px; padding:18px 20px; line-height:1.75">
+        <h3 class="title" style="margin-bottom:6px">Lo que sabemos hasta ahora</h3>
+        <p>El 31 de octubre de 2019, una joven de 20 años fue hallada sin vida al interior de su apartamento. Varios disparos en el pecho fueron la causa de su muerte. La víctima, identificada como Lucía Torres, era conocida en internet como <em>“Minerva”</em>, presunta hacker vinculada a la publicación de filtraciones que incomodaron a numerosos actores de poder.</p>
+        <p>La cronología del caso cruza registros telefónicos, geolocalización y cámaras urbanas. Las nuevas líneas de indagación se centran en el movimiento de personas clave horas antes del suceso. Este reporte busca condensar hallazgos verificados y abrir un canal para que la audiencia aporte información.</p>
+      </div>
+      <!-- COMENTARIOS SOLO AQUÍ -->
+      <section class="comments card" aria-labelledby="commentsTitle">
+        <header>
+          <h3 id="commentsTitle">Comentarios</h3>
+          <div class="actions"><span id="commentCount">0 comentarios</span></div>
+        </header>
+        <div class="composer">
+          <textarea id="commentInput" placeholder="Escribe tu comentario…"></textarea>
+          <div class="actions">
+            <small class="subtle">Consejo: mantén el respeto y aporta con datos o fuentes.</small>
+            <button class="btn" id="publishBtn" type="button">Publicar</button>
+          </div>
+        </div>
+        <div class="feed" id="feed"></div>
+      </section>
+    </section>
+  </main>
+
+  <footer>© <span id="year"></span> Kurono Newsletter — Relojes & Tiempo.</footer>
+
+  <!-- MODAL ARTÍCULOS -->
+  <div class="modal" id="articleModal" aria-hidden="true" role="dialog" aria-label="Artículo">
+    <div class="backdrop" data-close></div>
+    <article class="sheet">
+      <header>
+        <h3 id="modalTitle" style="margin:0; font:700 20px Rajdhani"></h3>
+        <button class="close" data-close>✕ Cerrar</button>
+      </header>
+      <div class="hero">
+        <div id="modalImg" class="hero-img"></div>
+      </div>
+      <div class="body" id="modalBody"></div>
+    </article>
+  </div>
+
+  <script>
+    // ==== Helpers
+    const $ = (s, c=document) => c.querySelector(s); const $$ = (s, c=document) => Array.from(c.querySelectorAll(s));
+
+    // ===== SPLASH 7s (misma lógica, estilo relojería) =====
+    const splashStart = Date.now();
+    const MIN_SPLASH_MS = 7000; // 7 segundos
+    const splash = document.getElementById('splash');
+    const bar = document.getElementById('bar');
+    const phase = document.getElementById('phase');
+    const percent = document.getElementById('percent');
+    const phases = ['Cargando módulos…','Ajustando manecillas…','Sincronizando líneas de tiempo…','Comprobando marcas…','Listo'];
+    let raf;
+    function animateProgress(){
+      const elapsed = Date.now() - splashStart;
+      const pct = Math.min(100, Math.floor((elapsed / MIN_SPLASH_MS) * 100));
+      bar.style.width = pct + '%';
+      percent.textContent = pct + '%';
+      const step = Math.min(phases.length - 1, Math.floor((elapsed / MIN_SPLASH_MS) * phases.length));
+      phase.textContent = phases[step];
+      if(pct < 100){ raf = requestAnimationFrame(animateProgress); }
+    }
+    animateProgress();
+    function endSplash(){ splash.classList.add('hidden'); setTimeout(()=> splash.remove(), 900); }
+    window.addEventListener('load', ()=>{
+      const remain = Math.max(0, MIN_SPLASH_MS - (Date.now() - splashStart));
+      setTimeout(endSplash, remain);
+    });
+
+    // ===== NEWS DATA (misma estructura) =====
+    const news = [
+      {id:'ia', t:'Reconstruyen cronología con IA', c:'tecnologia', img:'https://images.unsplash.com/photo-1518779578993-ec3579fee39f?q=80&w=1200&auto=format&fit=crop', body:`<p>Investigadores aplican <strong>modelos de reconstrucción temporal</strong> para ordenar miles de eventos dispersos. Con mapas de calor y grafos, logran <em>ubicar</em> a personas y objetos clave.</p><p>El módulo compara secuencias de video de baja calidad, corrige distorsiones y <u>sincroniza relojes</u> de cámaras distintas.</p>`},
+      {id:'fin', t:'Rastros financieros conectan ciudades', c:'mundo', img:'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=1200&auto=format&fit=crop', body:`<p>Transferencias pequeñas pero <strong>recurrentes</strong> entre cuentas en Lima, Quito y Santiago revelan un patrón. Analistas siguen el flujo a través de <em>exchanges</em> y remesadoras.</p>`},
+      {id:'priv', t:'Vigilancia urbana y privacidad', c:'sociedad', img:'https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1200&auto=format&fit=crop', body:`<p>El debate público crece: ¿hasta dónde deben llegar las cámaras urbanas? Expertos piden <strong>auditorías</strong> y protocolos claros de retención de datos.</p>`},
+      {id:'alg', t:'Algoritmos detectan patrones', c:'tecnologia', img:'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=1200&auto=format&fit=crop', body:`<p>Una red neuronal compara rasgos de vehículos y prendas. <em>Matching</em> probabilístico reduce la lista de sospechosos en un 60%.</p>`},
+      {id:'test', t:'Testigos clave reaparecen', c:'sociedad', img:'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=1200&auto=format&fit=crop', body:`<p>Dos vecinos del centro brindan nuevas declaraciones. Se cruzan con los registros de <strong>telefonía</strong> y transporte público.</p>`},
+      {id:'coop', t:'Cooperación regional en 2019', c:'mundo', img:'https://images.unsplash.com/photo-1532581140115-3e355d1ed1de?q=80&w=1200&auto=format&fit=crop', body:`<p>Autoridades de la región comparten <strong>indicios</strong> a través de canales formales e informales. Objetivo: cerrar brechas entre jurisdicciones.</p>`},
+      {id:'map', t:'Mapas de calor delictivo', c:'tecnologia', img:'https://images.unsplash.com/photo-1484807352052-23338990c6c6?q=80&w=1200&auto=format&fit=crop', body:`<p>Los mapas revelan <strong>zonas de convergencia</strong> y momentos críticos. Se combinan con datos de movilidad y meteorología.</p>`},
+      {id:'red', t:'Redes sociales como evidencia', c:'sociedad', img:'https://images.unsplash.com/photo-1516387938699-a93567ec168e?q=80&w=1200&auto=format&fit=crop', body:`<p>Publicaciones borradas y <em>capturas</em> de chats aportan contexto. Se valida autenticidad con <strong>hashes</strong> y metadatos.</p>`},
+      {id:'ctx', t:'Contexto global del caso', c:'mundo', img:'https://images.unsplash.com/photo-1461696114087-397271a7aedc?q=80&w=1200&auto=format&fit=crop', body:`<p>El caso encaja en una <strong>tendencia</strong> de ataques dirigidos contra <em>divulgadores</em> y filtradores desde 2018 a 2021.</p>`}
+    ];
+
+    // Construye portada
+    const grid = document.getElementById('newsGrid');
+    function card(n){ const el = document.createElement('article'); el.className='news-card reveal'; el.dataset.cat=n.c; el.dataset.id=n.id; el.innerHTML=`<div class=\"news-media\" style=\"background-image:url('${n.img}')\"></div><div class=\"news-body\"><div class=\"news-meta\"><span class=\"chip\">${n.c}</span><span>•</span><span>Edición</span></div><div class=\"news-title\">${n.t}</div></div>`; return el; }
+    news.forEach(n => grid.appendChild(card(n)));
+
+    // Filtros
+    const tabs = document.getElementById('tabs');
+    tabs.addEventListener('click', (e)=>{ if(!e.target.classList.contains('tab')) return; $$('.tab', tabs).forEach(t=>t.classList.remove('active')); e.target.classList.add('active'); const f=e.target.dataset.filter; $$('.news-card', grid).forEach(el=>{ const show=(f==='all') || el.dataset.cat===f; el.style.display=show? '':'none'; if(show){ el.classList.remove('in'); void el.offsetWidth; el.classList.add('in'); } }); });
+
+    // Modal
+    const modal = document.getElementById('articleModal'); const modalTitle=$('#modalTitle'); const modalImg=$('#modalImg'); const modalBody=$('#modalBody');
+    grid.addEventListener('click', (e)=>{ const card=e.target.closest('.news-card'); if(!card) return; const item=news.find(n=>n.id===card.dataset.id); if(!item) return; modalTitle.textContent=item.t; modalImg.style.backgroundImage=`url('${item.img}')`; modalBody.innerHTML=item.body; modal.classList.add('active'); modal.setAttribute('aria-hidden','false'); });
+    modal.addEventListener('click', (e)=>{ if(e.target.closest('[data-close]') || e.target.classList.contains('backdrop')) closeModal(); });
+    window.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closeModal(); }); function closeModal(){ modal.classList.remove('active'); modal.setAttribute('aria-hidden','true'); }
+
+    // Reveal
+    const io = new IntersectionObserver((entries)=>{ entries.forEach(en=>{ if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); } }); }, { threshold:.1 });
+    $$('.reveal').forEach(el=> io.observe(el));
+
+    // Decorativos
+    const readers = document.getElementById('readers'); document.getElementById('year').textContent = new Date().getFullYear();
+    setInterval(()=>{ const n = Number(readers.textContent.replace(/\D/g,'')) + (Math.random()>.5? 1:-1)*Math.floor(Math.random()*5); readers.textContent = n.toLocaleString('en-US'); }, 5000);
+
+    // Comentarios principal (lógica intacta de alternancia cada 5 min)
+    const STORAGE_KEY='kurono.comments.v1'; const feed=document.getElementById('feed'); const usernameInput=document.getElementById('username');
+    function saveComments(c){ localStorage.setItem(STORAGE_KEY, JSON.stringify(c)); } function loadComments(){ try{ return JSON.parse(localStorage.getItem(STORAGE_KEY))||[] }catch{ return [] } }
+    function formatCount(n){ return `${n} ${n===1?'comentario':'comentarios'}` }
+    function labelForTimestamp(createdAtMs){ const now=Date.now(); const elapsed=now-createdAtMs; const slot=Math.floor(elapsed/(5*60*1000)); return (slot%2===0)?'justo ahora':'hace 6 años'; }
+    function escapeHtml(s){ return s.replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;'}[m])) }
+    function linkify(t){ return t.replace(/(https?:\/\/[^\s]+)/g, u=>`<a href=\"${u}\" target=\"_blank\" rel=\"noopener\">${u}</a>`) }
+    const seed=[ {id:crypto.randomUUID(), user:'@AnalistaLima', body:'Pasé por la zona en 2019; había sirenas a medianoche. Quizá cámaras cercanas.', createdAt:Date.now()-9*60*1000}, {id:crypto.randomUUID(), user:'@VecinoCentro', body:'La esquina de Jr. X con Av. Y tenía obras ese mes. Revisar permisos.', createdAt:Date.now()-16*60*1000}, {id:crypto.randomUUID(), user:'@ArchivoDigital', body:'Hilo: https://ejemplo.test/caso2019', createdAt:Date.now()-26*60*1000} ];
+    let comments = loadComments(); if(comments.length===0){ comments=seed; saveComments(comments); }
+    function renderComment(c){ const el=document.createElement('article'); el.className='comment'; el.dataset.id=c.id; el.dataset.createdAt=String(c.createdAt); el.innerHTML=`<div class=\"avatar\" aria-hidden=\"true\"></div><div><div class=\"head\"><span class=\"username\">${escapeHtml(c.user)}</span><span class=\"time-label\">${labelForTimestamp(c.createdAt)}</span></div><div class=\"body\">${linkify(escapeHtml(c.body))}</div><div class=\"tools\"><button class=\"tool like\" data-like>❤ Me gusta</button><button class=\"tool\" data-remove>Eliminar</button></div></div>`; return el; }
+    function syncCount(){ document.getElementById('commentCount').textContent = formatCount(feed.children.length) }
+    function rerenderAllLabels(){ $$('.comment').forEach(el=>{ const createdAt=Number(el.dataset.createdAt); $('.time-label', el).textContent=labelForTimestamp(createdAt); }); }
+    comments.sort((a,b)=> a.createdAt-b.createdAt).forEach(c=> feed.appendChild(renderComment(c))); syncCount(); rerenderAllLabels(); setInterval(rerenderAllLabels, 30*1000);
+    const btn=document.getElementById('publishBtn');
+    btn.addEventListener('mousemove', (e)=>{ const r=e.target.getBoundingClientRect(); btn.style.setProperty('--angle', ((e.clientX-r.left)/r.width*360)+'deg'); });
+    btn.addEventListener('click', ()=>{ const body=document.getElementById('commentInput').value.trim(); if(!body){ document.getElementById('commentInput').focus(); return; } const user=(usernameInput.value.trim()||'@Minerva'); const c={ id:crypto.randomUUID(), user, body, createdAt:Date.now() }; comments.push(c); saveComments(comments); const el=renderComment(c); feed.appendChild(el); document.getElementById('commentInput').value=''; syncCount(); rerenderAllLabels(); feed.scrollTo({ top:feed.scrollHeight, behavior:'smooth' }); burst(el); });
+    document.getElementById('commentInput').addEventListener('keydown', (e)=>{ if((e.ctrlKey||e.metaKey) && e.key==='Enter') btn.click(); });
+    feed.addEventListener('click', (e)=>{ const card=e.target.closest('.comment'); if(!card) return; if(e.target.matches('[data-like]')){ e.target.classList.toggle('liked'); e.target.textContent=e.target.classList.contains('liked')? '❤ Te gusta':'❤ Me gusta'; pulse(card); } if(e.target.matches('[data-remove]')){ card.style.transition='transform .25s ease, opacity .25s ease, height .25s ease, margin .25s ease, padding .25s ease'; card.style.transform='scale(.98) translateX(6px)'; card.style.opacity='0'; card.style.height='0'; card.style.margin='0'; card.style.padding='0 14px'; setTimeout(()=>{ card.remove(); syncCount(); saveComments($$('.comment').map(x=>({ id:x.dataset.id, user:$('.username',x).textContent, body:$('.body',x).textContent, createdAt:Number(x.dataset.createdAt) }))); }, 260); } });
+    function pulse(el){ el.animate([{transform:'scale(1) rotate(0)'},{transform:'scale(1.02) rotate(.1deg)'},{transform:'scale(1) rotate(0)'}], {duration:220, easing:'ease-out'}); }
+    function burst(target){ const rect=target.getBoundingClientRect(); const n=10; for(let i=0;i<n;i++){ const p=document.createElement('span'); p.style.position='fixed'; p.style.left=(rect.left+rect.width*0.2+Math.random()*rect.width*0.6)+'px'; p.style.top=(rect.top+10+Math.random()*20)+'px'; p.style.width=p.style.height='6px'; p.style.borderRadius='50%'; p.style.background=i%2? 'rgba(245,200,106,.95)':'rgba(202,162,78,.95)'; p.style.pointerEvents='none'; p.style.zIndex='9999'; document.body.appendChild(p); const dx=(Math.random()-0.5)*120, dy=(-Math.random()*120)-20, rot=(Math.random()-0.5)*180; p.animate([{transform:'translate(0,0) rotate(0deg)', opacity:1},{transform:`translate(${dx}px, ${dy}px) rotate(${rot}deg)`, opacity:0}],{duration:520+Math.random()*420, easing:'cubic-bezier(.2,.8,.2,1)'}).onfinish=()=>p.remove(); } }
+
+    // Persistencia de usuario
+    const UKEY='kurono.user'; usernameInput.value = localStorage.getItem(UKEY) || '@Minerva'; usernameInput.addEventListener('input', ()=> localStorage.setItem(UKEY, usernameInput.value.trim()));
+  </script>
+</body>
+</html>
